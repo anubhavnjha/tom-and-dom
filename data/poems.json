@@ -1,0 +1,45 @@
+{
+  "_readme": "Add poems here. Each poem needs: id (unique number), title, content (full poem text with line breaks as \\n), date (YYYY-MM-DD), tags (array of strings), excerpt (optional short preview). Save the file and push to GitHub — the site updates automatically for everyone.",
+  "poems": [
+    {
+      "id": 1,
+      "title": "The Space Between Words",
+      "date": "2024-03-15",
+      "tags": ["love", "silence", "longing"],
+      "excerpt": "There are things I never said — they live in the margins of my letters, in the pauses of my sentences...",
+      "content": "There are things I never said —\nthey live in the margins of my letters,\nin the pauses of my sentences,\nin the white space between words\nthat were never enough.\n\nI have been writing you\nfor longer than I have known your name,\ncalling out in every poem\nlike a letter with no address.\n\nPerhaps that is what poetry is:\nthe art of saying everything\nby barely saying anything at all.\n\nAnd perhaps that is what you are:\nthe silence that makes the music make sense."
+    },
+    {
+      "id": 2,
+      "title": "Boundary Ropes",
+      "date": "2024-04-02",
+      "tags": ["cricket", "dreams", "determination"],
+      "excerpt": "The boundary rope is not an ending — it is a promise the field makes to the sky...",
+      "content": "The boundary rope is not an ending —\nit is a promise the field makes to the sky:\nthat if you hit it hard enough,\nyou can reach anywhere.\n\nI have stood at the crease at dawn\nwhen the dew still hangs like questions\nand the pitch is as uncertain as my future.\n\nBut I have learned this:\nyou do not need to see where the ball will land.\nYou only need to trust your arms,\nyour breathing,\nthe years of silence that became muscle.\n\nEvery cover drive is a small prayer.\nEvery six is the universe answering."
+    },
+    {
+      "id": 3,
+      "title": "Sir HV's Classroom",
+      "date": "2024-05-10",
+      "tags": ["gratitude", "teachers", "memory"],
+      "excerpt": "He never taught from the board — he taught from the window, from the weather...",
+      "content": "He never taught from the board —\nhe taught from the window,\nfrom the weather,\nfrom the way a sentence could hold a whole life\nif you let it.\n\nHe said: literature is not a subject.\nIt is a way of surviving.\n\nI did not understand then.\nI was sixteen and restless\nand the world outside was louder\nthan any poem.\n\nBut now I hear him in everything I write —\nhis voice in the margin, asking:\nIs this true? Is this yours? Is this enough?\n\nThe answer is always: because of you,\nyes."
+    },
+    {
+      "id": 4,
+      "title": "Delhi, October",
+      "date": "2024-06-18",
+      "tags": ["Delhi", "nature", "city"],
+      "excerpt": "The smog has not come yet. The trees on the campus road still believe in themselves...",
+      "content": "The smog has not come yet.\nThe trees on the campus road still believe in themselves,\nstill wearing their green like an argument\nagainst the city's grey intentions.\n\nI walk here between lectures\nwith my notebook pressed to my chest\nlike armour, like a promise.\n\nDelhi does not care about poetry.\nDelhi runs on noise and ambition\nand the smell of chai at six in the morning.\n\nBut I have found a way to love it anyway —\nthe way you love anything complicated:\nby paying attention,\nby staying."
+    },
+    {
+      "id": 5,
+      "title": "For Tom",
+      "date": "2024-08-22",
+      "tags": ["love", "tom", "dedication"],
+      "excerpt": "Before I knew what to write, I knew I would write it for you...",
+      "content": "Before I knew what to write,\nI knew I would write it for you.\n\nThat is the strange thing about inspiration —\nit does not arrive with instructions.\nIt arrives as a person,\nstanding in a doorway,\nlooking like they belong in every poem\nyou have not yet written.\n\nYou have been the subject\nand the reason\nand the reader I imagine\nwhen the words refuse to come.\n\nI do not know how to thank you for that.\nSo I keep writing.\nThat is the only language I have\nthat comes close to what I mean."
+    }
+  ]
+}
