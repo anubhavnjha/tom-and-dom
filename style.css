@@ -310,3 +310,16 @@ footer p{font-size:0.73rem;color:var(--cream);opacity:0.35;letter-spacing:0.06em
   color: #ffffff !important;
   opacity: 0.8 !important;
 }
+
+/* Make the main page poem section longer and more spacious */
+#poems .sec-inner {
+  padding-top: 160px !important;    /* Increases top spacing */
+  padding-bottom: 160px !important; /* Increases bottom spacing */
+}
+
+/* Give the description text a more elegant, breathing layout */
+.poems-desc {
+  line-height: 2.3 !important;      /* Widens space between text lines */
+  margin-bottom: 64px !important;   /* Pushes the button down further */
+  letter-spacing: 0.02em;           /* Slightly opens up the letters */
+}
