@@ -79,7 +79,7 @@ input,textarea{font-family:var(--ff-body)}
 }
 .hero-inner{max-width:660px;width:100%}
 .hero-welcome{font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:400;color:var(--cream);margin-bottom:6px;letter-spacing:0.015em}
-.hero-title{font-family:var(--ff-brand);font-style:italic;font-size:clamp(2.8rem,8vw,5.6rem);color:var(--cream);line-height:1.08;letter-spacing:-0.01em;margin-bottom:18px}
+.hero-title{font-family:'IM Fell English',serif;font-style:normal;font-size:clamp(2.8rem,8vw,5.6rem);color:var(--cream);line-height:1.08;letter-spacing:-0.01em;margin-bottom:18px}
 .hero-sub{font-size:clamp(0.6rem,1.2vw,0.72rem);letter-spacing:0.28em;text-transform:uppercase;color:var(--cream);opacity:0.65;margin-bottom:52px}
 .hero-search{
   display:flex;align-items:center;
@@ -88,15 +88,15 @@ input,textarea{font-family:var(--ff-body)}
   padding:10px 10px 10px 26px;max-width:430px;width:100%;margin:0 auto;gap:10px;transition:var(--trans);
 }
 .hero-search:focus-within{background:rgba(247,243,237,0.14);border-color:rgba(247,243,237,0.38);box-shadow:0 0 0 4px rgba(247,243,237,0.05)}
-.hero-input{flex:1;background:none;border:none;outline:none;font-size:0.88rem;color:var(--brown);caret-color:var(--brown);min-width:0}
-.hero-input::placeholder{color:var(--brown);opacity:0.85}
+.hero-input{flex:1;background:none;border:none;outline:none;font-size:0.88rem;color:#ffffff;caret-color:#ffffff;min-width:0}
+.hero-input::placeholder{color:#ffffff;opacity:0.85}
 .hero-search-btn{
   width:36px;height:36px;border-radius:50%;
   background:rgba(247,243,237,0.13);border:1px solid rgba(247,243,237,0.22);
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:var(--trans);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);
 }
-.hero-search-btn svg{stroke:var(--brown)}
+.hero-search-btn svg{stroke:#ffffff}
 .hero-search-btn:hover{background:rgba(247,243,237,0.25);transform:scale(1.08)}
 
 /* DARK SECTIONS */
@@ -151,10 +151,10 @@ input,textarea{font-family:var(--ff-body)}
 .contact-form{display:flex;flex-direction:column;gap:14px}
 .form-field{
   width:100%;background:rgba(247,243,237,0.06);border:1px solid rgba(247,243,237,0.16);
-  border-radius:var(--pill);padding:15px 24px;font-size:0.85rem;color:var(--brown);
+  border-radius:var(--pill);padding:15px 24px;font-size:0.85rem;color:#ffffff;
   outline:none;transition:var(--trans);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);
 }
-.form-field::placeholder{color:var(--brown);opacity:0.8}
+.form-field::placeholder{color:#ffffff;opacity:0.8}
 .form-field:focus{background:rgba(247,243,237,0.11);border-color:rgba(247,243,237,0.34);box-shadow:0 0 0 3px rgba(247,243,237,0.05)}
 .form-msg{border-radius:20px;min-height:130px;resize:vertical;padding:18px 24px}
 .submit-btn{align-self:flex-start}
@@ -177,14 +177,14 @@ footer p{font-size:0.73rem;color:var(--cream);opacity:0.35;letter-spacing:0.06em
   padding:10px 10px 10px 26px;max-width:400px;width:100%;gap:10px;transition:var(--trans);
 }
 .pg-search-wrap:focus-within{background:rgba(247,243,237,0.14);border-color:rgba(247,243,237,0.38)}
-.pg-search-input{flex:1;background:none;border:none;outline:none;font-size:0.88rem;color:var(--brown);caret-color:var(--brown);min-width:0}
-.pg-search-input::placeholder{color:var(--brown);opacity:0.85}
+.pg-search-input{flex:1;background:none;border:none;outline:none;font-size:0.88rem;color:#ffffff;caret-color:#ffffff;min-width:0}
+.pg-search-input::placeholder{color:#ffffff;opacity:0.85}
 .pg-search-btn{
   width:36px;height:36px;border-radius:50%;background:rgba(247,243,237,0.13);border:1px solid rgba(247,243,237,0.22);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--trans);
   backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);
 }
-.pg-search-btn svg{stroke:var(--brown)}
+.pg-search-btn svg{stroke:#ffffff}
 .pg-search-btn:hover{background:rgba(247,243,237,0.25)}
 .poem-grid-section{background:rgba(5,3,3,0.88);min-height:60vh;padding:70px var(--ph)}
 .poems-count{max-width:1100px;margin:0 auto 28px;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--cream);opacity:0.35}
@@ -256,3 +256,57 @@ footer p{font-size:0.73rem;color:var(--cream);opacity:0.35;letter-spacing:0.06em
   .sec-inner{max-width:920px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+
+/* ──────────────────────────────────────────────────────────
+   CUSTOM OVERRIDES: WHITE TEXT, LOGO SPACING & FONT FIXES
+   ────────────────────────────────────────────────────────── */
+
+/* Make nav links text white */
+.nav-links a {
+  color: #ffffff !important;
+  opacity: 0.95 !important;
+}
+
+/* Make nav search icon white */
+.nav-search-pill svg {
+  stroke: #ffffff !important;
+}
+
+/* Force the main landing title to use IM Fell English without italics */
+.hero-title, .pg-hero-title {
+  font-family: 'IM Fell English', serif !important;
+  font-style: normal !important;
+}
+
+/* Make text inside the big middle search box white */
+.hero-input {
+  color: #ffffff !important;
+}
+.hero-input::placeholder {
+  color: #ffffff !important;
+  opacity: 0.85 !important;
+}
+.hero-search-btn svg {
+  stroke: #ffffff !important;
+}
+
+/* Make text inside the poems grid search box white */
+.pg-search-input {
+  color: #ffffff !important;
+}
+.pg-search-input::placeholder {
+  color: #ffffff !important;
+  opacity: 0.85 !important;
+}
+.pg-search-btn svg {
+  stroke: #ffffff !important;
+}
+
+/* Make contact form input text white */
+.form-field {
+  color: #ffffff !important;
+}
+.form-field::placeholder {
+  color: #ffffff !important;
+  opacity: 0.8 !important;
+}
