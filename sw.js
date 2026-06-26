@@ -4,7 +4,7 @@
    so poems are saved on every visitor's phone
    ============================================= */
 
-const CACHE  = 'tom-dom-v4'; // Update version string here!
+const CACHE  = 'tom-dom-v6'; // Update version string here!
 const ASSETS = [
   './',
   './index.html',
@@ -63,6 +63,9 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
+   
+   './admin.html',
+  './admin-script.js',
 
   // Cache-first for everything else
   event.respondWith(
