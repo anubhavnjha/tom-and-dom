@@ -4,11 +4,13 @@
    so poems are saved on every visitor's phone
    ============================================= */
 
-const CACHE  = 'tom-dom-v2';
+const CACHE  = 'tom-dom-v4'; // Update version string here!
 const ASSETS = [
   './',
   './index.html',
   './poems.html',
+  './admin.html',       // ADD THIS LINE
+  './admin-script.js',  // ADD THIS LINE
   './style.css',
   './script.js',
   './poems-script.js',
