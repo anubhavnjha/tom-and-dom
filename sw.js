@@ -4,7 +4,7 @@
    so poems are saved on every visitor's phone
    ============================================= */
 
-const CACHE  = 'tom-dom-v1';
+const CACHE  = 'tom-dom-v2';
 const ASSETS = [
   './',
   './index.html',
