@@ -1,13 +1,41 @@
-<ul class="nav-links">
-  <li><a href="index.html">home</a></li>
-  <li><a href="index.html#about">about us</a></li>
-  <li><a href="index.html#contact">contact us</a></li>
-  <li><a href="admin.html">admin</a></li> </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dashboard — tom' and dom'</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background-color: #0d0a09; color: #f7f3ed; font-family: 'Playfair Display', serif; padding: 20px; }
+    .admin-container { max-width: 900px; margin: 120px auto 40px auto; padding: 30px; background: rgba(247,243,237,0.04); border: 1px solid rgba(247,243,237,0.1); border-radius: 12px; display: none; backdrop-filter: blur(20px); }
+    h1 { font-family: 'IM Fell English', serif; color: #f7f3ed; border-bottom: 1px solid rgba(247,243,237,0.1); padding-bottom: 15px; margin-bottom: 30px; font-weight: normal; letter-spacing: 0.05em; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid rgba(247,243,237,0.08); }
+    th { font-family: 'IM Fell English', serif; color: #f7f3ed; background-color: rgba(247,243,237,0.06); letter-spacing: 0.05em; }
+    td strong { font-family: 'Playfair Display', serif; font-weight: 400; }
+    .stat-badge { background: rgba(247,243,237,0.08); padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; color: #f7f3ed; border: 1px solid rgba(247,243,237,0.1); }
+  </style>
+</head>
+<body>
 
-...
+  <div class="admin-container" id="adminPanel">
+    <h1>analytics dashboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Poem Title</th>
+          <th>Total Visits (Views)</th>
+          <th>Total Likes</th>
+        </tr>
+      </thead>
+      <tbody id="analyticsTable">
+        <tr>
+          <td colspan="3" style="text-align: center; color: #bbb;">Connecting to live database stream...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <a href="index.html" class="mobile-link">home</a>
-  <a href="index.html#about" class="mobile-link">about us</a>
-  <a href="index.html#contact" class="mobile-link">contact us</a>
-  <a href="admin.html" class="mobile-link">admin</a> </div>
+  <script type="module" src="admin-script.js"></script>
+</body>
+</html>
