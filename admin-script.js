@@ -7,8 +7,8 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-// Connection config
 const firebaseConfig = {
   "apiKey": "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
   "authDomain": "tom-and-dom.firebaseapp.com",
@@ -20,24 +20,27 @@ const firebaseConfig = {
   "measurementId": "G-F4BSZQ97JM"
 };
 
-// Custom Password
-const SECRET_PASSWORD = "StelaJha@9229"; 
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-// Prompt right before rendering layouts
-const userAttempt = prompt("Enter Administration Password:");
+// Securely sign in behind the scenes
+signInAnonymously(auth)
+  .catch((error) => {
+    console.error("Authentication failed:", error);
+    document.getElementById('analyticsTable').innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c;">Access Denied.</td></tr>`;
+  });
 
-if (userAttempt === SECRET_PASSWORD) {
-  // Reveal layout
-  document.getElementById('adminPanel').style.display = "block";
-  
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  
-  loadLiveStats(db);
-} else {
-  alert("Invalid password. Access denied.");
-  window.location.href = "index.html";
-}
+// Only load data if the user is authenticated successfully
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Reveal layout container
+    document.getElementById('adminPanel').style.display = "block";
+    loadLiveStats(db);
+  } else {
+    window.location.href = "index.html";
+  }
+});
 
 function loadLiveStats(db) {
   const tableBody = document.getElementById('analyticsTable');
@@ -67,5 +70,8 @@ function loadLiveStats(db) {
       `;
       tableBody.innerHTML += rowHTML;
     });
+  }, (error) => {
+    console.error("Database read blocked:", error);
+    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c;">Permission denied by security rules.</td></tr>`;
   });
 }
