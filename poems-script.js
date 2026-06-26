@@ -9,31 +9,23 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
 import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-// !!! REPLACE THIS BLOCK WITH THE SETTINGS FROM YOUR NOTEPAD !!!
 const firebaseConfig = {
- // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
-  authDomain: "tom-and-dom.firebaseapp.com",
-  databaseURL: "https://tom-and-dom-default-rtdb.firebaseio.com",
-  projectId: "tom-and-dom",
-  storageBucket: "tom-and-dom.firebasestorage.app",
-  messagingSenderId: "513490054798",
-  appId: "1:513490054798:web:ef02cfa2be9288fd61a3df",
-  measurementId: "G-F4BSZQ97JM"
+  "apiKey": "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+  "authDomain": "tom-and-dom.firebaseapp.com",
+  "databaseURL": "https://tom-and-dom-default-rtdb.firebaseio.com",
+  "projectId": "tom-and-dom",
+  "storageBucket": "tom-and-dom.firebasestorage.app",
+  "messagingSenderId": "513490054798",
+  "appId": "1:513490054798:web:ef02cfa2be9288fd61a3df",
+  "measurementId": "G-F4BSZQ97JM"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-};
+const db = getDatabase(app);
+
+// Tracking variable for current open poem
+let currentPoemId = null;
+let currentPoemTitle = "";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
