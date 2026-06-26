@@ -330,3 +330,46 @@ footer p{font-size:0.73rem;color:var(--cream);opacity:0.35;letter-spacing:0.06em
   font-size: 1.1rem; /* Adjust the size slightly if you want it to stand out */
   line-height: 1.6;  /* Gives it beautiful, poetic spacing */
 }
+
+
+/* =========================================================
+   GOD MODE ATMOSPHERE THEMES OVERRIDES
+   ========================================================= */
+
+/* 1. Melancholy Theme Vibe */
+body.theme-melancholy {
+  background-color: #121214 !important;
+  color: #9292a6 !important;
+  transition: all 0.8s ease;
+}
+body.theme-melancholy .poem-card, 
+body.theme-melancholy .form-section {
+  background: rgba(146, 146, 166, 0.04) !important;
+  border-color: rgba(146, 146, 166, 0.15) !important;
+}
+
+/* 2. Midnight Moon Theme Vibe */
+body.theme-midnight {
+  background-color: #030710 !important;
+  color: #b0cbf7 !important;
+  transition: all 0.8s ease;
+}
+body.theme-midnight h1, body.theme-midnight h2, body.theme-midnight h3 {
+  color: #e0ebff !important;
+  text-shadow: 0 0 12px rgba(176, 203, 247, 0.4);
+}
+
+/* 3. Vintage Parchment Theme Vibe */
+body.theme-parchment {
+  background-color: #f4ecd8 !important;
+  color: #3c2f25 !important;
+  transition: all 0.8s ease;
+}
+body.theme-parchment h1, body.theme-parchment h2, body.theme-parchment h3 {
+  color: #241a10 !important;
+}
+body.theme-parchment .poem-card,
+body.theme-parchment .form-section {
+  background: rgba(60, 47, 37, 0.03) !important;
+  border-color: rgba(60, 47, 37, 0.2) !important;
+}
