@@ -1,6 +1,6 @@
 /* =============================================
    tom' and dom' — admin-script.js
-   Protected Analytics Dashboard Panel
+   Password Protected Firebase Analytics Dashboard
    ============================================= */
 
 'use strict';
@@ -24,54 +24,69 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-// Securely sign in behind the scenes
-signInAnonymously(auth)
-  .catch((error) => {
-    console.error("Authentication failed:", error);
-    document.getElementById('analyticsTable').innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c;">Access Denied.</td></tr>`;
-  });
+// 1. Prompt for your secret password immediately
+const passwordAttempt = prompt("Enter Admin Password:");
 
-// Only load data if the user is authenticated successfully
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Reveal layout container
-    document.getElementById('adminPanel').style.display = "block";
-    loadLiveStats(db);
-  } else {
-    // window.location.href = "index.html";
-  }
-});
-
-function loadLiveStats(db) {
-  const tableBody = document.getElementById('analyticsTable');
-  const analyticsRef = ref(db, 'analytics');
-
-  onValue(analyticsRef, (snapshot) => {
-    const data = snapshot.val();
-    tableBody.innerHTML = ""; 
-
-    if (!data) {
-      tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #bbb;">No data records found yet.</td></tr>`;
-      return;
-    }
-
-    Object.keys(data).forEach(poemKey => {
-      const record = data[poemKey];
-      const displayTitle = record.title || poemKey.replace("poem_", "").replace(/_/g, " ");
-      const totalViews = record.views || 0;
-      const totalLikes = record.likes || 0;
-
-      const rowHTML = `
-        <tr>
-          <td><strong>${displayTitle}</strong></td>
-          <td><span class="stat-badge">${totalViews} views</span></td>
-          <td><span class="stat-badge" style="color: #e74c3c;">❤️ ${totalLikes} likes</span></td>
-        </tr>
-      `;
-      tableBody.innerHTML += rowHTML;
+if (!passwordAttempt) {
+  alert("Access Denied.");
+  window.location.href = "index.html";
+} else {
+  // 2. Sign in anonymously first
+  signInAnonymously(auth)
+    .then(() => {
+      // 3. Try to read data using the password as the route path
+      verifyAndLoadData(passwordAttempt);
+    })
+    .catch((error) => {
+      console.error("Auth failed:", error);
+      window.location.href = "index.html";
     });
+}
+
+function verifyAndLoadData(secretKey) {
+  const tableBody = document.getElementById('analyticsTable');
+  
+  // Look at the path named after the entered password
+  const secureRef = ref(db, `secure_gateways/${secretKey}`);
+
+  onValue(secureRef, (snapshot) => {
+    const verificationData = snapshot.val();
+
+    // Check if the validation structure exists and evaluates to true
+    if (verificationData && verificationData.authenticated === true) {
+      document.getElementById('adminPanel').style.display = "block";
+      
+      // Load real statistics
+      const analyticsRef = ref(db, 'analytics');
+      onValue(analyticsRef, (statsSnapshot) => {
+        const data = statsSnapshot.val();
+        tableBody.innerHTML = ""; 
+
+        if (!data) {
+          tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #bbb;">No data records found.</td></tr>`;
+          return;
+        }
+
+        Object.keys(data).forEach(poemKey => {
+          const record = data[poemKey];
+          const displayTitle = record.title || poemKey.replace("poem_", "").replace(/_/g, " ");
+          tableBody.innerHTML += `
+            <tr>
+              <td><strong>${displayTitle}</strong></td>
+              <td><span class="stat-badge">${record.views || 0} views</span></td>
+              <td><span class="stat-badge" style="color: #e74c3c;">❤️ ${record.likes || 0} likes</span></td>
+            </tr>
+          `;
+        });
+      });
+
+    } else {
+      alert("Incorrect Password.");
+      window.location.href = "index.html";
+    }
   }, (error) => {
-    console.error("Database read blocked:", error);
-    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c;">Permission denied by security rules.</td></tr>`;
+    console.error("Access blocked:", error);
+    alert("Incorrect Password.");
+    window.location.href = "index.html";
   });
 }
