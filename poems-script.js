@@ -1,9 +1,46 @@
 /* =============================================
    tom' and dom' — poems-script.js
-   Poems page: load, search, filter, modal
+   Poems page: load, search, filter, modal + Live Analytics
    ============================================= */
 
 'use strict';
+
+// ── CONNECT TO FIREBASE ──────────────────────
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+// !!! REPLACE THIS BLOCK WITH THE SETTINGS FROM YOUR NOTEPAD !!!
+const firebaseConfig = {
+ // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+  authDomain: "tom-and-dom.firebaseapp.com",
+  databaseURL: "https://tom-and-dom-default-rtdb.firebaseio.com",
+  projectId: "tom-and-dom",
+  storageBucket: "tom-and-dom.firebasestorage.app",
+  messagingSenderId: "513490054798",
+  appId: "1:513490054798:web:ef02cfa2be9288fd61a3df",
+  measurementId: "G-F4BSZQ97JM"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Tracking variable for current open poem
+let currentPoemId = null;
+let currentPoemTitle = "";
 
 // Footer year
 const fy = document.getElementById('footerYear');
@@ -107,27 +144,30 @@ function doSearch() {
 
 searchBtn.addEventListener('click', doSearch);
 searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-searchInput.addEventListener('input', doSearch);  // live filter
+searchInput.addEventListener('input', doSearch);
 
-// Check URL param for pre-filled search
 const urlQ = new URLSearchParams(window.location.search).get('q');
 if (urlQ) {
   searchInput.value = urlQ;
 }
 
-// Nav search pill
 document.getElementById('navSearchBtn').addEventListener('click', () => {
   document.getElementById('pgHero').scrollIntoView({ behavior: 'smooth' });
   setTimeout(() => searchInput.focus(), 350);
 });
 
-// ── Modal ─────────────────────────────────────
+// ── Modal & Live Analytics ────────────────────
 const modalOverlay = document.getElementById('poemModal');
 const modalClose   = document.getElementById('modalClose');
+const likeBtn      = document.getElementById('modalLikeBtn');
+const likeCountEl  = document.getElementById('modalLikeCount');
 
 function openModal(id) {
   const poem = allPoems.find(p => String(p.id) === String(id));
   if (!poem) return;
+
+  currentPoemId = id;
+  currentPoemTitle = poem.title;
 
   document.getElementById('modalDate').textContent  = poem.date ? formatDate(poem.date) : '';
   document.getElementById('modalTitle').textContent = poem.title;
@@ -137,9 +177,58 @@ function openModal(id) {
   tagsEl.innerHTML = (poem.tags || [])
     .map(t => `<span class="poem-tag">${t}</span>`).join('');
 
+  // Update button UI state depending on if the user already clicked like
+  if (localStorage.getItem('liked_poem_' + id)) {
+    likeBtn.innerHTML = '<i class="fa-solid fa-heart" style="color: #e74c3c;"></i> Liked';
+    likeBtn.style.borderColor = '#e74c3c';
+  } else {
+    likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i> Like';
+    likeBtn.style.borderColor = '#fff';
+  }
+
+  // Live Track Analytics Database references
+  const dbCleanKey = "poem_" + id; 
+  
+  // 1. Log view hit
+  runTransaction(ref(db, 'analytics/' + dbCleanKey + '/views'), (currentViews) => {
+    return (currentViews || 0) + 1;
+  });
+  
+  // 2. Continuous real-time fetch for current likes string layout 
+  onValue(ref(db, 'analytics/' + dbCleanKey + '/likes'), (snapshot) => {
+    const totalLikes = snapshot.val() || 0;
+    likeCountEl.textContent = `${totalLikes} like${totalLikes !== 1 ? 's' : ''}`;
+  });
+
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   modalClose.focus();
+}
+
+// Global click event logic handler attached to modal layout button
+if (likeBtn) {
+  likeBtn.addEventListener('click', () => {
+    if (!currentPoemId) return;
+    
+    // Prevent double clicking like exploitation
+    if (localStorage.getItem('liked_poem_' + currentPoemId)) {
+      return; 
+    }
+
+    localStorage.setItem('liked_poem_' + currentPoemId, 'true');
+    likeBtn.innerHTML = '<i class="fa-solid fa-heart" style="color: #e74c3c;"></i> Liked';
+    likeBtn.style.borderColor = '#e74c3c';
+
+    const dbCleanKey = "poem_" + currentPoemId;
+    runTransaction(ref(db, 'analytics/' + dbCleanKey + '/likes'), (currentLikes) => {
+      return (currentLikes || 0) + 1;
+    });
+    
+    // Save metadata tracking text reference fallback value record entry mapping help structure
+    runTransaction(ref(db, 'analytics/' + dbCleanKey + '/title'), () => {
+      return currentPoemTitle;
+    });
+  });
 }
 
 function closeModal() {
@@ -161,7 +250,6 @@ document.addEventListener('keydown', e => {
   renderPoems(allPoems);
   if (urlQ) doSearch();
 
-  // Cache poems in localStorage as offline backup
   try {
     localStorage.setItem('tom-dom-poems', JSON.stringify(allPoems));
   } catch (_) {}
