@@ -27,13 +27,6 @@ const db = getDatabase(app);
 let currentPoemId = null;
 let currentPoemTitle = "";
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// Tracking variable for current open poem
-let currentPoemId = null;
-let currentPoemTitle = "";
-
 // Footer year
 const fy = document.getElementById('footerYear');
 if (fy) fy.textContent = new Date().getFullYear();
@@ -169,27 +162,29 @@ function openModal(id) {
   tagsEl.innerHTML = (poem.tags || [])
     .map(t => `<span class="poem-tag">${t}</span>`).join('');
 
-  // Update button UI state depending on if the user already clicked like
   if (localStorage.getItem('liked_poem_' + id)) {
-    likeBtn.innerHTML = '<i class="fa-solid fa-heart" style="color: #e74c3c;"></i> Liked';
-    likeBtn.style.borderColor = '#e74c3c';
+    if (likeBtn) {
+      likeBtn.innerHTML = '<i class="fa-solid fa-heart" style="color: #e74c3c;"></i> Liked';
+      likeBtn.style.borderColor = '#e74c3c';
+    }
   } else {
-    likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i> Like';
-    likeBtn.style.borderColor = '#fff';
+    if (likeBtn) {
+      likeBtn.innerHTML = '<i class="fa-regular fa-heart"></i> Like';
+      likeBtn.style.borderColor = '#fff';
+    }
   }
 
-  // Live Track Analytics Database references
   const dbCleanKey = "poem_" + id; 
   
-  // 1. Log view hit
   runTransaction(ref(db, 'analytics/' + dbCleanKey + '/views'), (currentViews) => {
     return (currentViews || 0) + 1;
   });
   
-  // 2. Continuous real-time fetch for current likes string layout 
   onValue(ref(db, 'analytics/' + dbCleanKey + '/likes'), (snapshot) => {
     const totalLikes = snapshot.val() || 0;
-    likeCountEl.textContent = `${totalLikes} like${totalLikes !== 1 ? 's' : ''}`;
+    if (likeCountEl) {
+      likeCountEl.textContent = `${totalLikes} like${totalLikes !== 1 ? 's' : ''}`;
+    }
   });
 
   modalOverlay.classList.add('open');
@@ -197,12 +192,10 @@ function openModal(id) {
   modalClose.focus();
 }
 
-// Global click event logic handler attached to modal layout button
 if (likeBtn) {
   likeBtn.addEventListener('click', () => {
     if (!currentPoemId) return;
     
-    // Prevent double clicking like exploitation
     if (localStorage.getItem('liked_poem_' + currentPoemId)) {
       return; 
     }
@@ -216,7 +209,6 @@ if (likeBtn) {
       return (currentLikes || 0) + 1;
     });
     
-    // Save metadata tracking text reference fallback value record entry mapping help structure
     runTransaction(ref(db, 'analytics/' + dbCleanKey + '/title'), () => {
       return currentPoemTitle;
     });
@@ -246,12 +238,3 @@ document.addEventListener('keydown', e => {
     localStorage.setItem('tom-dom-poems', JSON.stringify(allPoems));
   } catch (_) {}
 })();
-
-// Service Worker
-// if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { scope: './' })
-      .then(() => console.log('[SW] Registered'))
-      .catch(err => console.warn('[SW] Failed:', err));
-  });
-}
