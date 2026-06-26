@@ -1,122 +1,130 @@
-/* =============================================
-   tom' and dom' — script.js
-   Main page JavaScript
-   ============================================= */
+/* =========================================================
+   tom' and dom' — script.js (LIVE BROADCAST & THEME CLIENT)
+   ========================================================= */
 
 'use strict';
 
-// ── Footer year ──────────────────────────────
-const fy = document.getElementById('footerYear');
-if (fy) fy.textContent = new Date().getFullYear();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-// ── Hamburger / Mobile Nav ───────────────────
-const hamburger  = document.getElementById('hamburger');
-const mobileNav  = document.getElementById('mobileNav');
-const mobileLinks = document.querySelectorAll('.mobile-link');
+const firebaseConfig = {
+  "apiKey": "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+  "authDomain": "tom-and-dom.firebaseapp.com",
+  "databaseURL": "https://tom-and-dom-default-rtdb.firebaseio.com",
+  "projectId": "tom-and-dom",
+  "storageBucket": "tom-and-dom.firebasestorage.app",
+  "messagingSenderId": "513490054798",
+  "appId": "1:513490054798:web:ef02cfa2be9288fd61a3df",
+  "measurementId": "G-F4BSZQ97JM"
+};
 
-function toggleMenu(open) {
-  hamburger.classList.toggle('open', open);
-  mobileNav.classList.toggle('open', open);
-  hamburger.setAttribute('aria-expanded', open);
-  mobileNav.setAttribute('aria-hidden', !open);
-}
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-hamburger.addEventListener('click', () => {
-  const isOpen = mobileNav.classList.contains('open');
-  toggleMenu(!isOpen);
+// Initialize listeners when DOM content is fully ready
+document.addEventListener("DOMContentLoaded", () => {
+  initializeGodModeListeners();
+  initializePinnedPoemsSection();
 });
 
-mobileLinks.forEach(link => {
-  link.addEventListener('click', () => toggleMenu(false));
-});
-
-// Close on outside click
-document.addEventListener('click', e => {
-  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
-    toggleMenu(false);
-  }
-});
-
-// ── Navbar scroll styling ────────────────────
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 20);
-}, { passive: true });
-
-// ── Hero darkening as you scroll ─────────────
-// Hero starts at rgba(10,5,5,0.50). As you scroll through it,
-// it progressively darkens to 0.88 (matching dark-section overlay).
-const hero = document.getElementById('hero');
-
-function updateHeroOverlay() {
-  if (!hero) return;
-  const heroH  = hero.offsetHeight;
-  const scrollY = window.scrollY;
-  // Darken from scroll start (0) to end of hero (heroH)
-  const progress = Math.min(Math.max(scrollY / (heroH * 0.75), 0), 1);
-  const opacity  = 0.50 + progress * 0.38;  // 0.50 → 0.88
-  hero.style.background = `rgba(10,5,5,${opacity.toFixed(3)})`;
-}
-
-window.addEventListener('scroll', updateHeroOverlay, { passive: true });
-updateHeroOverlay(); // run once on load
-
-// ── Nav search → hero search focus ───────────
-const navSearchBtn  = document.getElementById('navSearchBtn');
-const heroInput     = document.getElementById('heroInput');
-
-function focusHeroSearch() {
-  if (!hero || !heroInput) return;
-  hero.scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => heroInput.focus(), 400);
-}
-
-navSearchBtn.addEventListener('click', focusHeroSearch);
-
-// ── Hero search → poems page ──────────────────
-const heroSearchBtn = document.getElementById('heroSearchBtn');
-
-function doHeroSearch() {
-  const q = heroInput.value.trim();
-  window.location.href = q
-    ? `poems.html?q=${encodeURIComponent(q)}`
-    : 'poems.html';
-}
-
-heroSearchBtn.addEventListener('click', doHeroSearch);
-heroInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') doHeroSearch();
-});
-
-// ── Contact form ──────────────────────────────
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(contactForm);
-    const name = data.get('name').trim();
-    if (!name) { alert('Please enter your name.'); return; }
-    const email = data.get('email').trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert('Please enter a valid email.'); return;
+/* =========================================================
+   FEATURE 8 & 10: ATMOSPHERE & BROADCAST WATCHER
+   ========================================================= */
+function initializeGodModeListeners() {
+  // 1. Watch for Theme Changes Live
+  const themeRef = ref(db, 'live_status/current_theme');
+  onValue(themeRef, (snapshot) => {
+    const activeTheme = snapshot.val() || 'default';
+    
+    // Clear previous custom atmosphere classes
+    document.body.classList.remove('theme-melancholy', 'theme-midnight', 'theme-parchment');
+    
+    if (activeTheme !== 'default') {
+      document.body.classList.add(`theme-${activeTheme}`);
     }
-    const msg = data.get('message').trim();
-    if (!msg) { alert('Please write a message.'); return; }
+  });
 
-    // Mailto fallback (works without a backend)
-    const mailto = `mailto:anubhavjha@proton.me`
-      + `?subject=Message from ${encodeURIComponent(name)}`
-      + `&body=${encodeURIComponent(msg + '\n\n— ' + name + ' <' + email + '>')}`;
-    window.open(mailto);
-    contactForm.reset();
+  // 2. Watch for Flash Broadcasts Live
+  const broadcastRef = ref(db, 'live_status/flash_broadcast');
+  onValue(broadcastRef, (snapshot) => {
+    const msg = snapshot.val();
+    let broadcastBanner = document.getElementById('globalBroadcastBanner');
+
+    // If no banner element exists on page yet, create it dynamically
+    if (!broadcastBanner && msg) {
+      broadcastBanner = document.createElement('div');
+      broadcastBanner.id = 'globalBroadcastBanner';
+      broadcastBanner.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; background: #f1c40f; color: #0d0a09; text-align: center; padding: 12px; font-family: 'IM Fell English', serif; font-size: 1.1rem; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.3); letter-spacing: 0.05em; transition: all 0.3s ease;";
+      document.body.prepend(broadcastBanner);
+    }
+
+    if (msg) {
+      broadcastBanner.innerHTML = `<i class="fa-solid fa-bullhorn animate-pulse"></i> ${msg}`;
+      broadcastBanner.style.display = "block";
+      document.body.style.paddingTop = "45px"; // Displace content downwards cleanly
+    } else if (broadcastBanner) {
+      broadcastBanner.style.display = "none";
+      document.body.style.paddingTop = "0px";
+    }
   });
 }
 
-// ── Service Worker registration ───────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { scope: './' })
-      .then(() => console.log('[SW] Registered'))
-      .catch(err => console.warn('[SW] Failed:', err));
+/* =========================================================
+   FEATURE 5: ACCESSIBILITY PINNED POEMS LOADER
+   ========================================================= */
+function initializePinnedPoemsSection() {
+  // Look for a landing spot container right under your introduction section
+  // If your HTML container doesn't match this exactly, we'll append it gracefully
+  let pinnedWrap = document.getElementById('pinnedPoemsContainer');
+  
+  if (!pinnedWrap) {
+    const introSection = document.querySelector('.intro') || document.querySelector('header');
+    if (introSection) {
+      pinnedWrap = document.createElement('div');
+      pinnedWrap.id = 'pinnedPoemsContainer';
+      pinnedWrap.style.cssText = "max-width: 800px; margin: 40px auto; padding: 20px; border-top: 1px solid rgba(247,243,237,0.1);";
+      introSection.after(pinnedWrap);
+    }
+  }
+
+  if (!pinnedWrap) return;
+
+  onValue(ref(db, 'content_library'), (snapshot) => {
+    const library = snapshot.val() || {};
+    pinnedWrap.innerHTML = ""; // Clear existing blocks
+
+    // Filter down to active pinned assets
+    const pinnedKeys = Object.keys(library).filter(key => library[key].isPinned && library[key].status === 'published');
+
+    if (pinnedKeys.length > 0) {
+      pinnedWrap.innerHTML = `<h2 style="font-family: 'IM Fell English', serif; margin-bottom: 20px; font-size: 1.5rem; text-align: center; letter-spacing:0.05em;"><i class="fa-solid fa-thumbtack"></i> Featured Verses</h2>`;
+      
+      const grid = document.createElement('div');
+      grid.style.cssText = "display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;";
+
+      pinnedKeys.forEach(key => {
+        const item = library[key];
+        const snippet = item.body.split('\n').slice(0, 3).join('<br>') + '...'; // Show first 3 lines max
+        
+        grid.innerHTML += `
+          <div class="poem-card target-link" data-id="${key}" style="background: rgba(247,243,237,0.03); padding: 20px; border: 1px dashed rgba(247,243,237,0.15); border-radius: 8px; cursor: pointer;">
+            <h3 style="font-family: 'IM Fell English', serif; margin-bottom: 5px;">${item.title}</h3>
+            <span style="font-size:0.8rem; opacity:0.5; display:block; margin-bottom:12px;">${item.date}</span>
+            <p style="font-size: 0.95rem; line-height: 1.6; font-style: italic; opacity: 0.8; margin-bottom: 15px;">${snippet}</p>
+            <span style="font-size: 0.85rem; text-decoration: underline; opacity: 0.6;">Read full verse →</span>
+          </div>
+        `;
+      });
+      
+      pinnedWrap.appendChild(grid);
+
+      // Attach clicks to direct users seamlessly to the dedicated poem reader
+      pinnedWrap.querySelectorAll('.poem-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const targetId = card.getAttribute('data-id');
+          window.location.href = `poems.html?id=${targetId}`;
+        });
+      });
+    }
   });
 }
