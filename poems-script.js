@@ -234,7 +234,7 @@ document.addEventListener('keydown', e => {
   renderPoems(allPoems);
   if (urlQ) doSearch();
 
-  try {
+try {
     localStorage.setItem('tom-dom-poems', JSON.stringify(allPoems));
   } catch (_) {}
 })();
