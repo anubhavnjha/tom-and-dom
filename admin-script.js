@@ -38,7 +38,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById('adminPanel').style.display = "block";
     loadLiveStats(db);
   } else {
-    window.location.href = "index.html";
+    // window.location.href = "index.html";
   }
 });
 
