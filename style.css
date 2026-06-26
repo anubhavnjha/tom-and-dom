@@ -323,3 +323,10 @@ footer p{font-size:0.73rem;color:var(--cream);opacity:0.35;letter-spacing:0.06em
   margin-bottom: 64px !important;   /* Pushes the button down further */
   letter-spacing: 0.02em;           /* Slightly opens up the letters */
 }
+
+/* Custom font update for the about section introduction */
+.body-txt.italic-txt {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; /* Adjust the size slightly if you want it to stand out */
+  line-height: 1.6;  /* Gives it beautiful, poetic spacing */
+}
