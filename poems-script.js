@@ -78,17 +78,22 @@ function formatDate(iso) {
   } catch { return iso; }
 }
 
+// Fixed minor bug to look for container cleanly
 function renderPoems(poems) {
   const grid  = document.getElementById('poemGrid');
   const count = document.getElementById('poemsCount');
 
+  if (!grid) return;
+
   if (poems.length === 0) {
     grid.innerHTML = '<p class="poems-empty">no poems found.</p>';
-    count.textContent = '';
+    if (count) count.textContent = '';
     return;
   }
 
-  count.textContent = `${poems.length} poem${poems.length !== 1 ? 's' : ''}`;
+  if (count) {
+    count.textContent = `${poems.length} poem${poems.length !== 1 ? 's' : ''}`;
+  }
 
   grid.innerHTML = poems.map(p => `
     <article class="poem-card" data-id="${p.id}" tabindex="0" role="button"
@@ -117,6 +122,7 @@ const searchInput = document.getElementById('pgSearchInput');
 const searchBtn   = document.getElementById('pgSearchBtn');
 
 function doSearch() {
+  if (!searchInput) return;
   const q = searchInput.value.toLowerCase().trim();
   if (!q) { renderPoems(allPoems); return; }
   const filtered = allPoems.filter(p =>
@@ -127,19 +133,25 @@ function doSearch() {
   renderPoems(filtered);
 }
 
-searchBtn.addEventListener('click', doSearch);
-searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-searchInput.addEventListener('input', doSearch);
+if (searchBtn) searchBtn.addEventListener('click', doSearch);
+if (searchInput) {
+  searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  searchInput.addEventListener('input', doSearch);
+}
 
 const urlQ = new URLSearchParams(window.location.search).get('q');
-if (urlQ) {
+if (urlQ && searchInput) {
   searchInput.value = urlQ;
 }
 
-document.getElementById('navSearchBtn').addEventListener('click', () => {
-  document.getElementById('pgHero').scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => searchInput.focus(), 350);
-});
+const navSearch = document.getElementById('navSearchBtn');
+if (navSearch) {
+  navSearch.addEventListener('click', () => {
+    const pgHero = document.getElementById('pgHero');
+    if (pgHero) pgHero.scrollIntoView({ behavior: 'smooth' });
+    if (searchInput) setTimeout(() => searchInput.focus(), 350);
+  });
+}
 
 // ── Modal & Live Analytics ────────────────────
 const modalOverlay = document.getElementById('poemModal');
@@ -159,8 +171,10 @@ function openModal(id) {
   document.getElementById('modalBody').textContent  = poem.content;
 
   const tagsEl = document.getElementById('modalTags');
-  tagsEl.innerHTML = (poem.tags || [])
-    .map(t => `<span class="poem-tag">${t}</span>`).join('');
+  if (tagsEl) {
+    tagsEl.innerHTML = (poem.tags || [])
+      .map(t => `<span class="poem-tag">${t}</span>`).join('');
+  }
 
   if (localStorage.getItem('liked_poem_' + id)) {
     if (likeBtn) {
@@ -189,7 +203,7 @@ function openModal(id) {
 
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  modalClose.focus();
+  if (modalClose) modalClose.focus();
 }
 
 if (likeBtn) {
@@ -216,25 +230,106 @@ if (likeBtn) {
 }
 
 function closeModal() {
-  modalOverlay.classList.remove('open');
+  if (modalOverlay) modalOverlay.classList.remove('open');
   document.body.style.overflow = '';
 }
 
-modalClose.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', e => {
-  if (e.target === modalOverlay) closeModal();
-});
+if (modalClose) modalClose.addEventListener('click', closeModal);
+if (modalOverlay) {
+  modalOverlay.addEventListener('click', e => {
+    if (e.target === modalOverlay) closeModal();
+  });
+}
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-// ── Init ──────────────────────────────────────
-(async () => {
-  allPoems = await loadPoems();
-  renderPoems(allPoems);
-  if (urlQ) doSearch();
 
-try {
-    localStorage.setItem('tom-dom-poems', JSON.stringify(allPoems));
-  } catch (_) {}
+// ── STEP 2: ENHANCED INITIALIZATION LISTENERS ──
+(() => {
+  
+  // A. Listen for Live Global Theme Updates
+  onValue(ref(db, 'settings/theme'), (snapshot) => {
+    const incomingTheme = snapshot.val() || 'default';
+    // Clean old state
+    document.body.classList.remove('theme-melancholy', 'theme-midnight', 'theme-parchment');
+    if (incomingTheme !== 'default') {
+      document.body.classList.add('theme-' + incomingTheme);
+    }
+  });
+
+  // B. Listen for Live Top Broadcast Banners
+  onValue(ref(db, 'settings/broadcast'), (snapshot) => {
+    const globalMessage = snapshot.val();
+    let bannerEl = document.getElementById('liveBroadcastBanner');
+    const navEl = document.getElementById('navbar');
+    
+    if (!globalMessage) {
+      if (bannerEl) {
+        bannerEl.remove();
+        if (navEl) navEl.style.top = '0';
+      }
+      return;
+    }
+    
+    if (!bannerEl) {
+      bannerEl = document.createElement('div');
+      bannerEl.id = 'liveBroadcastBanner';
+      bannerEl.style.cssText = `
+        background: #44342e;
+        color: #f7f3ed;
+        text-align: center;
+        padding: 10px 20px;
+        font-family: 'IM Fell English', serif;
+        font-size: 1.05rem;
+        letter-spacing: 0.05em;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        animation: fadeInDown 0.4s ease-out;
+      `;
+      document.body.prepend(bannerEl);
+    }
+    
+    bannerEl.innerHTML = `<i class="fa-solid fa-bullhorn" style="color: #f2e6d0; font-size:0.9rem;"></i> <span>${globalMessage}</span>`;
+    if (navEl) navEl.style.top = bannerEl.offsetHeight + 'px';
+  });
+
+  // C. Sync Local JSON Verses combined with New Database Drops
+  onValue(ref(db, 'poems'), async (snapshot) => {
+    const cloudPoemsData = snapshot.val() || {};
+    const cloudPoemsList = Object.values(cloudPoemsData);
+    
+    // Load local data file
+    const staticBasePoems = await loadPoems();
+    
+    // Merge arrays together cleanly
+    allPoems = [...cloudPoemsList, ...staticBasePoems];
+    
+    // Sort array by newest dates first
+    allPoems.sort((alpha, beta) => new Date(beta.date || 0) - new Date(alpha.date || 0));
+    
+    // Render the grid or search matching results
+    if (searchInput && searchInput.value.trim() !== '') {
+      doSearch();
+    } else {
+      renderPoems(allPoems);
+    }
+    
+    try {
+      localStorage.setItem('tom-dom-poems', JSON.stringify(allPoems));
+    } catch (_) {}
+  });
+
+  if (urlQ && searchInput) {
+    searchInput.value = urlQ;
+    doSearch();
+  }
 })();
