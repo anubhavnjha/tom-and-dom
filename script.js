@@ -61,7 +61,7 @@ function initializeGodModeListeners() {
     if (msg) {
       broadcastBanner.innerHTML = `<i class="fa-solid fa-bullhorn animate-pulse"></i> ${msg}`;
       broadcastBanner.style.display = "block";
-      document.body.style.paddingTop = "45px"; // Displace content downwards cleanly
+      document.body.style.paddingTop = "45px"; 
     } else if (broadcastBanner) {
       broadcastBanner.style.display = "none";
       document.body.style.paddingTop = "0px";
@@ -73,12 +73,10 @@ function initializeGodModeListeners() {
    FEATURE 5: ACCESSIBILITY PINNED POEMS LOADER
    ========================================================= */
 function initializePinnedPoemsSection() {
-  // Look for a landing spot container right under your introduction section
-  // If your HTML container doesn't match this exactly, we'll append it gracefully
   let pinnedWrap = document.getElementById('pinnedPoemsContainer');
   
   if (!pinnedWrap) {
-    const introSection = document.querySelector('.intro') || document.querySelector('header');
+    const introSection = document.getElementById('hero') || document.getElementById('navbar');
     if (introSection) {
       pinnedWrap = document.createElement('div');
       pinnedWrap.id = 'pinnedPoemsContainer';
@@ -91,7 +89,7 @@ function initializePinnedPoemsSection() {
 
   onValue(ref(db, 'content_library'), (snapshot) => {
     const library = snapshot.val() || {};
-    pinnedWrap.innerHTML = ""; // Clear existing blocks
+    pinnedWrap.innerHTML = ""; 
 
     // Filter down to active pinned assets
     const pinnedKeys = Object.keys(library).filter(key => library[key].isPinned && library[key].status === 'published');
@@ -104,7 +102,7 @@ function initializePinnedPoemsSection() {
 
       pinnedKeys.forEach(key => {
         const item = library[key];
-        const snippet = item.body.split('\n').slice(0, 3).join('<br>') + '...'; // Show first 3 lines max
+        const snippet = item.body.split('\n').slice(0, 3).join('<br>') + '...'; 
         
         grid.innerHTML += `
           <div class="poem-card target-link" data-id="${key}" style="background: rgba(247,243,237,0.03); padding: 20px; border: 1px dashed rgba(247,243,237,0.15); border-radius: 8px; cursor: pointer;">
@@ -118,7 +116,6 @@ function initializePinnedPoemsSection() {
       
       pinnedWrap.appendChild(grid);
 
-      // Attach clicks to direct users seamlessly to the dedicated poem reader
       pinnedWrap.querySelectorAll('.poem-card').forEach(card => {
         card.addEventListener('click', () => {
           const targetId = card.getAttribute('data-id');
