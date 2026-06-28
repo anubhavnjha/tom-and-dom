@@ -1,11 +1,11 @@
 /* =========================================================
-   tom' and dom' — admin-script.js (GOD MODE ENGINE)
+   tom' and dom' — admin-script.js 
    ========================================================= */
 
 'use strict';
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -38,7 +38,7 @@ if (!passwordAttempt) {
 function verifyAdminClearance(secretKey) {
   const secureRef = ref(db, `secure_gateways/${secretKey}`);
 
-  onValue(secureRef, (snapshot) => {
+  get(secureRef).then((snapshot) => {
     const verification = snapshot.val();
     if (verification && verification.authenticated === true) {
       
@@ -54,7 +54,7 @@ function verifyAdminClearance(secretKey) {
       alert("Incorrect Password.");
       window.location.href = "index.html";
     }
-  }, () => {
+  }).catch(() => {
     alert("Incorrect Password.");
     window.location.href = "index.html";
   });
@@ -134,13 +134,12 @@ function initializeContentManagement() {
       body: body,
       status: targetStatus,
       isPinned: isPinned,
-      audio_url: "" // Placeholder for audio upload tracking
+      audio_url: "" 
     };
 
     // Save to Content Library Node
     set(ref(db, `content_library/${poemId}`), poemData)
       .then(() => {
-        // Create initial placeholder counter variables if new
         update(ref(db, `analytics/${poemId}`), { title: title });
         alert(`Verse successfully saved as [${targetStatus.toUpperCase()}]!`);
         form.reset();
@@ -221,7 +220,6 @@ function initializeLiveMetrics() {
       tableBody.appendChild(row);
     });
 
-    // Attach Dynamic Actions to Generated Rows
     attachTableEventInterceptors();
   });
 }
@@ -230,12 +228,12 @@ function attachTableEventInterceptors() {
   document.querySelectorAll('.toggle-pin-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
-      // Read current state once to flip it safely
       const pinRef = ref(db, `content_library/${id}/isPinned`);
-      onValue(pinRef, (snap) => {
+      
+      get(pinRef).then((snap) => {
         const currentPin = snap.val();
         update(ref(db, `content_library/${id}`), { isPinned: !currentPin });
-      }, { onlyOnce: true });
+      });
     });
   });
 
@@ -243,11 +241,12 @@ function attachTableEventInterceptors() {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
       const statusRef = ref(db, `content_library/${id}/status`);
-      onValue(statusRef, (snap) => {
+      
+      get(statusRef).then((snap) => {
         const currentStatus = snap.val();
         const nextStatus = currentStatus === 'draft' ? 'published' : 'draft';
         update(ref(db, `content_library/${id}`), { status: nextStatus });
-      }, { onlyOnce: true });
+      });
     });
   });
 
