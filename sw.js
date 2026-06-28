@@ -9,8 +9,8 @@ const ASSETS = [
   './',
   './index.html',
   './poems.html',
-  './admin.html',       // ADD THIS LINE
-  './admin-script.js',  // ADD THIS LINE
+  './admin.html',
+  './admin-script.js',
   './style.css',
   './script.js',
   './poems-script.js',
@@ -63,9 +63,6 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
-   
-   './admin.html',
-  './admin-script.js',
 
   // Cache-first for everything else
   event.respondWith(
