@@ -39,3 +39,21 @@ body.theme-parchment .form-section {
   background: rgba(60, 47, 37, 0.03) !important;
   border-color: rgba(60, 47, 37, 0.2) !important;
 }
+
+/* =========================================================
+   LIVE BROADCAST INCOMING ANIMATIONS
+   ========================================================= */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#navbar {
+  transition: top 0.3s ease;
+}
