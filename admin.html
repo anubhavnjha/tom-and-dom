@@ -2,25 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Portal — tom' and dom'</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — tom' and dom'</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="admin-box" id="adminBox" style="display: none;">
-    <h2>Publish Live Content</h2>
+  <div class="admin-container" id="adminBox" style="display: none;">
+    <h1 style="font-family: 'IM Fell English', serif; font-size: 2.5rem; text-align: center; margin-bottom: 25px; font-style: italic;">Publish Content</h1>
     
-    <label style="display:block; margin-bottom:5px;">Where are you publishing?</label>
+    <label style="display: block; margin-bottom: 6px; opacity: 0.7; font-size: 0.9rem;">What category is this going to?</label>
     <select id="contentType" class="form-field">
-      <option value="poems">Publish Poem</option>
-      <option value="research">Publish Research Paper</option>
+      <option value="poems">Verses & Poems Section</option>
+      <option value="research">Research & Writing Papers</option>
     </select>
 
-    <input type="text" id="postTitle" class="form-field" placeholder="Document Title" required>
-    <input type="text" id="postDate" class="form-field" placeholder="Publication Date (e.g., July 14, 2026)" required>
-    <textarea id="postBody" class="form-field" rows="10" placeholder="Type or paste contents here..." required></textarea>
+    <input type="text" id="postTitle" class="form-field" placeholder="Enter Title Here..." required>
+    <input type="text" id="postDate" class="form-field" placeholder="Publication Date (e.g. June 26, 2026)" required>
+    
+    <textarea id="postBody" class="form-field form-msg" placeholder="Paste or type content body details here..." required></textarea>
 
-    <button id="btnPublish" class="btn-submit">Publish Live</button>
+    <button id="btnPublish" class="btn-outline submit-btn">Publish to Website</button>
   </div>
 
   <script type="module" src="admin-script.js"></script>
