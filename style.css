@@ -1,59 +1,181 @@
 /* =========================================================
-   GOD MODE ATMOSPHERE THEMES OVERRIDES
+   tom' and dom' — style.css (CLEAN MINIMAL THEME)
    ========================================================= */
 
-/* 1. Melancholy Theme Vibe */
-body.theme-melancholy {
-  background-color: #121214 !important;
-  color: #9292a6 !important;
-  transition: all 0.8s ease;
-}
-body.theme-melancholy .poem-card, 
-body.theme-melancholy .form-section {
-  background: rgba(146, 146, 166, 0.04) !important;
-  border-color: rgba(146, 146, 166, 0.15) !important;
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* 2. Midnight Moon Theme Vibe */
-body.theme-midnight {
-  background-color: #030710 !important;
-  color: #b0cbf7 !important;
-  transition: all 0.8s ease;
-}
-body.theme-midnight h1, body.theme-midnight h2, body.theme-midnight h3 {
-  color: #e0ebff !important;
-  text-shadow: 0 0 12px rgba(176, 203, 247, 0.4);
-}
-
-/* 3. Vintage Parchment Theme Vibe */
-body.theme-parchment {
-  background-color: #f4ecd8 !important;
-  color: #3c2f25 !important;
-  transition: all 0.8s ease;
-}
-body.theme-parchment h1, body.theme-parchment h2, body.theme-parchment h3 {
-  color: #241a10 !important;
-}
-body.theme-parchment .poem-card,
-body.theme-parchment .form-section {
-  background: rgba(60, 47, 37, 0.03) !important;
-  border-color: rgba(60, 47, 37, 0.2) !important;
+body {
+  background-image: url('assets/images/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: #0d0a09;
+  color: #f7f3ed;
+  font-family: 'Playfair Display', serif;
+  line-height: 1.8;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* =========================================================
-   LIVE BROADCAST INCOMING ANIMATIONS
-   ========================================================= */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Legibility Dark Shade Overlay on Scroll */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 10, 9, 0.4); /* Light dark tint on landing */
+  z-index: -1;
+  transition: background 0.5s ease;
 }
 
-#navbar {
-  transition: top 0.3s ease;
+body.scrolled::before {
+  background: rgba(13, 10, 9, 0.85); /* Deep dark shade on scroll */
+}
+
+/* Header & Nav */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  z-index: 1000;
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  background: rgba(13, 10, 9, 0.95);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  padding: 15px 8%;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: #f7f3ed;
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.6;
+}
+
+/* Sections */
+section {
+  padding: 100px 8% 80px 8%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-section {
+  text-align: center;
+}
+
+.welcome-section h1 {
+  font-family: 'IM Fell English', serif;
+  font-size: 4rem;
+  font-weight: normal;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+/* Legible Text Containers */
+.container-dark {
+  background: rgba(26, 20, 18, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(247, 243, 237, 0.1);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Cards (Poems & Research) */
+.content-card {
+  background: rgba(26, 20, 18, 0.65);
+  border: 1px solid rgba(247, 243, 237, 0.08);
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 25px;
+  transition: transform 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-3px);
+}
+
+.content-card h2 {
+  font-family: 'IM Fell English', serif;
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+/* Simple Admin Layout */
+.admin-box {
+  max-width: 600px;
+  margin: 150px auto;
+  background: rgba(13, 10, 9, 0.9);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(247, 243, 237, 0.1);
+}
+
+.admin-box h2 {
+  font-family: 'IM Fell English', serif;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-field {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: rgba(247, 243, 237, 0.05);
+  border: 1px solid rgba(247, 243, 237, 0.2);
+  color: #f7f3ed;
+  font-family: inherit;
+  border-radius: 6px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: #f7f3ed;
+  color: #0d0a09;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
 }
