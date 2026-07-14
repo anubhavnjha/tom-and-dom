@@ -3,97 +3,96 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <meta name="theme-color" content="#0d0a09"/>
-  <meta name="description" content="All poems — tom' and dom'"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>poems — tom' and dom'</title>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="index.html" class="nav-logo" aria-label="tom and dom home">
-    <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" style="height: 35px; width: auto;" />
-  </a>
-  <div class="nav-right">
-    <button class="nav-search-pill" id="navSearchBtn" aria-label="Search poems">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <circle cx="7" cy="7" r="5" stroke-width="1.5"/>
-        <path d="M11 11L14.5 14.5" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" class="logo-img">
+    </a>
     <ul class="nav-links">
-  <li><a href="index.html">home</a></li>
-  <li><a href="index.html#about">about us</a></li>
-  <li><a href="index.html#contact">contact us</a></li>
-  <li><a href="admin.html">admin</a></li>
+      <li><a href="index.html">home</a></li>
+      <li><a href="poems.html">poems</a></li>
+      <li><a href="index.html#about">about us</a></li>
+      <li><a href="index.html#contact">contact us</a></li>
+      <li><a href="research.html" target="_blank">research</a></li>
     </ul>
-  </div>
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <a href="index.html" class="mobile-link">home</a>
-  <a href="index.html#about" class="mobile-link">about us</a>
-  <a href="index.html#contact" class="mobile-link">contact us</a>
-  <a href="admin.html" class="mobile-link">admin</a>
-</div>
+  </nav>
 
-<!-- HERO -->
-<section class="pg-hero" id="pgHero">
-  <h1 class="pg-hero-title">tom' and dom'</h1>
-  <p class="pg-hero-sub">A COLLECTION OF POEMS</p>
-  <div class="pg-search-wrap" role="search">
-    <input type="text" class="pg-search-input" id="pgSearchInput" placeholder="explore poems" aria-label="Search poems"/>
-    <button class="pg-search-btn" id="pgSearchBtn" aria-label="Search">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <circle cx="7" cy="7" r="5" stroke-width="1.5"/>
-        <path d="M11 11L14.5 14.5" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
-  </div>
-</section>
-
-<!-- POEM GRID -->
-<section class="poem-grid-section">
-  <p class="poems-count" id="poemsCount"></p>
-  <div class="poem-grid" id="poemGrid">
-    <div class="poems-loading"><div class="spinner"></div></div>
-  </div>
-</section>
-
-<!-- POEM MODAL -->
-<div class="poem-modal-overlay" id="poemModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="poem-modal">
-    <button class="poem-modal-close" id="modalClose" aria-label="Close poem">&times;</button>
-    <p class="poem-modal-date" id="modalDate"></p>
-    <h2 class="poem-modal-title" id="modalTitle"></h2>
-    <p class="poem-modal-body" id="modalBody"></p>
-    
-    <div class="modal-like-section" style="margin: 20px 0; display: flex; align-items: center; gap: 15px; border-top: 1px solid #333; padding-top: 15px;">
-      <button id="modalLikeBtn" style="background: transparent; border: 1px solid #fff; color: #fff; padding: 8px 16px; cursor: pointer; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
-        <i class="fa-regular fa-heart"></i> Like
-      </button>
-      <span id="modalLikeCount" style="font-family: 'Playfair Display', serif; color: #bbb;">0 likes</span>
+  <section style="margin-top: 50px;">
+    <h1 style="text-align: center; font-family: 'IM Fell English', serif; font-size: 3rem; margin-bottom: 40px; font-style: italic;">the verses</h1>
+    <div style="max-width: 800px; margin: 0 auto;" id="poemsContainer">
+      <p style="text-align: center;">tuning the strings, please wait...</p>
     </div>
+  </section>
 
-    <div class="poem-modal-tags" id="modalTags"></div>
-  </div>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-<!-- FOOTER -->
-<footer>
-  <p>Made with love for literature &amp; tom. &copy; <span id="footerYear"></span> tom' and dom'</p>
-</footer>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+      authDomain: "tom-and-dom.firebaseapp.com",
+      databaseURL: "https://tom-and-dom-default-rtdb.firebaseio.com",
+      projectId: "tom-and-dom",
+      storageBucket: "tom-and-dom.firebasestorage.app"
+    };
 
-<script type="module" src="poems-script.js"></script>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    onValue(ref(db, 'poems'), (snapshot) => {
+      const container = document.getElementById('poemsContainer');
+      const data = snapshot.val();
+      
+      if (!data) {
+        container.innerHTML = "<p style='text-align: center;'>No verses written down yet.</p>";
+        return;
+      }
+
+      container.innerHTML = "";
+      Object.keys(data).reverse().forEach(key => {
+        const item = data[key];
+        const views = item.views || 0;
+        const likes = item.likes || 0;
+
+        // Auto-increment view once per load
+        update(ref(db, `poems/${key}`), { views: views + 1 });
+
+        const poemCard = document.createElement('div');
+        poemCard.className = 'content-card';
+        poemCard.innerHTML = `
+          <h2>${item.title}</h2>
+          <small style="opacity: 0.5; display: block; margin-bottom: 15px;">${item.date || ''}</small>
+          <p style="white-space: pre-line; margin-bottom: 20px;">${item.body}</p>
+          <div style="display: flex; gap: 20px; align-items: center; border-top: 1px solid rgba(247,243,237,0.1); padding-top: 15px; font-size: 0.9rem;">
+            <span><i class="fa-regular fa-eye"></i> ${views + 1} views</span>
+            <button id="like-${key}" style="background: none; border: none; color: #f7f3ed; cursor: pointer;">
+              <i class="fa-regular fa-heart"></i> <span id="like-count-${key}">${likes}</span> likes
+            </button>
+          </div>
+        `;
+        container.appendChild(poemCard);
+
+        // Simple Like Interceptor
+        document.getElementById(`like-${key}`).addEventListener('click', () => {
+          update(ref(db, `poems/${key}`), { likes: likes + 1 });
+        }, { once: true });
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        document.getElementById('navbar').classList.add('scrolled');
+        document.body.classList.add('scrolled');
+      } else {
+        document.getElementById('navbar').classList.remove('scrolled');
+        document.body.classList.remove('scrolled');
+      }
+    });
+  </script>
 </body>
 </html>
