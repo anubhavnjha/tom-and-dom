@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research — tom' and dom'</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .research-card { background: rgba(13, 10, 9, 0.85); padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; }
+    .research-card h2 { font-family: 'IM Fell English', serif; margin-bottom: 5px; }
+    .research-card p { font-family: 'Playfair Display', serif; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  
+  <nav id="navbar">
+    <a href="index.html" class="logo"><img src="assets/images/tom-and-dom-logo.png" alt="logo" style="height: 40px;"></a>
+    <ul class="nav-links">
+      <li><a href="index.html">home</a></li>
+      <li><a href="index.html#about">about us</a></li>
+      <li><a href="index.html#contact">contact us</a></li>
+      <li><a href="research.html">research</a></li>
+    </ul>
+  </nav>
+
+  <div style="max-width: 800px; margin: 100px auto; padding: 20px;" id="researchContainer">
+    <h1 style="text-align: center; margin-bottom: 40px; font-family: 'IM Fell English', serif;">Research Papers</h1>
+    <p style="text-align: center;">Loading research...</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      "apiKey": "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+      "authDomain": "tom-and-dom.firebaseapp.com",
+      "databaseURL": "https://tom-and-dom-default-rtdb.firebaseio.com",
+      "projectId": "tom-and-dom"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    onValue(ref(db, 'research_library'), (snapshot) => {
+      const container = document.getElementById('researchContainer');
+      const data = snapshot.val();
+      
+      if (!data) {
+        container.innerHTML = "<h1 style='text-align: center;'>Research Papers</h1><p style='text-align: center;'>No research uploaded yet.</p>";
+        return;
+      }
+
+      container.innerHTML = "<h1 style='text-align: center; margin-bottom: 40px; font-family: \"IM Fell English\", serif;'>Research Papers</h1>";
+      
+      Object.values(data).reverse().forEach(paper => {
+        container.innerHTML += `
+          <div class="research-card">
+            <h2>${paper.title}</h2>
+            <small style="color: #bbb;">${paper.date}</small>
+            <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+            <p>${paper.body.replace(/\n/g, '<br>')}</p>
+          </div>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
