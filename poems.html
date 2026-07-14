@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>poems — tom' and dom'</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#0d0a09">
+  <title>verses — tom' and dom'</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
 </head>
 <body>
 
-  <nav id="navbar">
-    <a href="index.html" class="logo">
-      <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" class="logo-img">
-    </a>
+<nav id="navbar">
+  <a href="index.html#hero" class="nav-logo">
+    <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" style="height: 35px; width: auto;">
+  </a>
+  <div class="nav-right">
     <ul class="nav-links">
       <li><a href="index.html">home</a></li>
       <li><a href="poems.html">poems</a></li>
@@ -20,79 +25,56 @@
       <li><a href="index.html#contact">contact us</a></li>
       <li><a href="research.html" target="_blank">research</a></li>
     </ul>
-  </nav>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <section style="margin-top: 50px;">
-    <h1 style="text-align: center; font-family: 'IM Fell English', serif; font-size: 3rem; margin-bottom: 40px; font-style: italic;">the verses</h1>
-    <div style="max-width: 800px; margin: 0 auto;" id="poemsContainer">
-      <p style="text-align: center;">tuning the strings, please wait...</p>
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="index.html" class="mobile-link">home</a>
+  <a href="poems.html" class="mobile-link">poems</a>
+  <a href="index.html#about" class="mobile-link">about us</a>
+  <a href="index.html#contact" class="mobile-link">contact us</a>
+  <a href="research.html" target="_blank" class="mobile-link">research</a>
+</div>
+
+<section style="margin-top: 100px;" class="dark-section">
+  <div class="sec-inner">
+    <h1 style="text-align: center; font-family: 'IM Fell English', serif; font-size: 3.5rem; margin-bottom: 20px; font-style: italic;">the verses</h1>
+    <p style="text-align: center; margin-bottom: 40px; opacity: 0.6;">A library of dynamic emotional journeys and quiet declarations.</p>
+    
+    <div style="display: flex; margin-bottom: 40px; border-bottom: 1px solid rgba(247,243,237,0.15);">
+      <input type="text" id="poemsSearch" class="hero-input" placeholder="Search verses by title or line keywords..." style="font-size: 1rem;">
     </div>
-  </section>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    <div class="poem-grid" id="poemsContainer">
+      <p style="text-align: center; grid-column: 1/-1;">Tuning the database strings, please wait...</p>
+    </div>
+  </div>
+</section>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
-      authDomain: "tom-and-dom.firebaseapp.com",
-      databaseURL: "https://tom-and-dom-default-rtdb.firebaseio.com",
-      projectId: "tom-and-dom",
-      storageBucket: "tom-and-dom.firebasestorage.app"
-    };
+<div class="modal-overlay" id="poemModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModalBtn">&times;</button>
+    <p id="modalDate" style="font-size: 0.8rem; opacity: 0.5; margin-bottom: 10px;"></p>
+    <h2 id="modalTitle" style="font-family: 'IM Fell English', serif; font-size: 2.5rem; font-style: italic; margin-bottom: 25px;"></h2>
+    <p id="modalBody" style="white-space: pre-line; font-size: 1.1rem; line-height: 1.8; margin-bottom: 30px;"></p>
+    
+    <div style="display: flex; gap: 15px; border-top: 1px solid rgba(247,243,237,0.15); padding-top: 20px;">
+      <button id="likeBtn" style="background: transparent; border: 1px solid #f7f3ed; color: #f7f3ed; padding: 10px 20px; font-family: inherit; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 8px; transition: 0.3s;">
+        <i class="fa-regular fa-heart"></i> <span id="likeBtnText">Like Verse</span>
+      </button>
+      <span id="likeCounter" style="display: flex; align-items: center; font-size: 0.9rem; opacity: 0.7;">0 likes</span>
+    </div>
+  </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+<footer>
+  <p>Made with love for literature &amp; tom. © <span id="footerYear">2026</span> tom' and dom'</p>
+</footer>
 
-    onValue(ref(db, 'poems'), (snapshot) => {
-      const container = document.getElementById('poemsContainer');
-      const data = snapshot.val();
-      
-      if (!data) {
-        container.innerHTML = "<p style='text-align: center;'>No verses written down yet.</p>";
-        return;
-      }
-
-      container.innerHTML = "";
-      Object.keys(data).reverse().forEach(key => {
-        const item = data[key];
-        const views = item.views || 0;
-        const likes = item.likes || 0;
-
-        // Auto-increment view once per load
-        update(ref(db, `poems/${key}`), { views: views + 1 });
-
-        const poemCard = document.createElement('div');
-        poemCard.className = 'content-card';
-        poemCard.innerHTML = `
-          <h2>${item.title}</h2>
-          <small style="opacity: 0.5; display: block; margin-bottom: 15px;">${item.date || ''}</small>
-          <p style="white-space: pre-line; margin-bottom: 20px;">${item.body}</p>
-          <div style="display: flex; gap: 20px; align-items: center; border-top: 1px solid rgba(247,243,237,0.1); padding-top: 15px; font-size: 0.9rem;">
-            <span><i class="fa-regular fa-eye"></i> ${views + 1} views</span>
-            <button id="like-${key}" style="background: none; border: none; color: #f7f3ed; cursor: pointer;">
-              <i class="fa-regular fa-heart"></i> <span id="like-count-${key}">${likes}</span> likes
-            </button>
-          </div>
-        `;
-        container.appendChild(poemCard);
-
-        // Simple Like Interceptor
-        document.getElementById(`like-${key}`).addEventListener('click', () => {
-          update(ref(db, `poems/${key}`), { likes: likes + 1 });
-        }, { once: true });
-      });
-    });
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        document.getElementById('navbar').classList.add('scrolled');
-        document.body.classList.add('scrolled');
-      } else {
-        document.getElementById('navbar').classList.remove('scrolled');
-        document.body.classList.remove('scrolled');
-      }
-    });
-  </script>
+<script type="module" src="poems-script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
