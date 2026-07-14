@@ -2,12 +2,14 @@
    tom' and dom' — style.css (CLEAN MINIMAL THEME)
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -23,7 +25,7 @@ body {
   position: relative;
 }
 
-/* Legibility Dark Shade Overlay on Scroll */
+/* Background darken shade overlay for scroll-legibility */
 body::before {
   content: '';
   position: fixed;
@@ -31,39 +33,41 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(13, 10, 9, 0.4); /* Light dark tint on landing */
+  background: rgba(13, 10, 9, 0.45); /* initial translucent filter */
   z-index: -1;
-  transition: background 0.5s ease;
+  transition: background 0.6s ease-in-out;
 }
 
 body.scrolled::before {
-  background: rgba(13, 10, 9, 0.85); /* Deep dark shade on scroll */
+  background: rgba(13, 10, 9, 0.88); /* deeper contrast when scrolling */
 }
 
-/* Header & Nav */
+/* NAVIGATION */
 nav {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 8%;
+  padding: 25px 8%;
   z-index: 1000;
   background: transparent;
   transition: all 0.4s ease;
 }
 
 nav.scrolled {
-  background: rgba(13, 10, 9, 0.95);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  background: rgba(13, 10, 9, 0.96);
+  backdrop-filter: blur(10px);
   padding: 15px 8%;
+  border-bottom: 1px solid rgba(247, 243, 237, 0.05);
 }
 
-.logo-img {
-  height: 40px;
-  width: auto;
-  display: block;
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
 .nav-links {
@@ -72,110 +76,426 @@ nav.scrolled {
   gap: 30px;
 }
 
-.nav-links a {
+.nav-links a, .mobile-link {
   color: #f7f3ed;
   text-decoration: none;
   font-size: 0.95rem;
   letter-spacing: 0.1em;
   text-transform: lowercase;
-  transition: opacity 0.3s ease;
-}
-
-.nav-links a:hover {
-  opacity: 0.6;
-}
-
-/* Sections */
-section {
-  padding: 100px 8% 80px 8%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.welcome-section {
-  text-align: center;
-}
-
-.welcome-section h1 {
-  font-family: 'IM Fell English', serif;
-  font-size: 4rem;
-  font-weight: normal;
-  font-style: italic;
-  margin-bottom: 20px;
-}
-
-/* Legible Text Containers */
-.container-dark {
-  background: rgba(26, 20, 18, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(247, 243, 237, 0.1);
-  border-radius: 12px;
-  padding: 40px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Cards (Poems & Research) */
-.content-card {
-  background: rgba(26, 20, 18, 0.65);
-  border: 1px solid rgba(247, 243, 237, 0.08);
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 25px;
-  transition: transform 0.3s ease;
-}
-
-.content-card:hover {
-  transform: translateY(-3px);
-}
-
-.content-card h2 {
-  font-family: 'IM Fell English', serif;
-  font-size: 2rem;
-  margin-bottom: 5px;
-}
-
-/* Simple Admin Layout */
-.admin-box {
-  max-width: 600px;
-  margin: 150px auto;
-  background: rgba(13, 10, 9, 0.9);
-  padding: 40px;
-  border-radius: 12px;
-  border: 1px solid rgba(247, 243, 237, 0.1);
-}
-
-.admin-box h2 {
-  font-family: 'IM Fell English', serif;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.form-field {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  background: rgba(247, 243, 237, 0.05);
-  border: 1px solid rgba(247, 243, 237, 0.2);
-  color: #f7f3ed;
-  font-family: inherit;
-  border-radius: 6px;
-}
-
-.btn-submit {
-  width: 100%;
-  padding: 12px;
-  background: #f7f3ed;
-  color: #0d0a09;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
   transition: opacity 0.3s;
 }
 
-.btn-submit:hover {
-  opacity: 0.9;
+.nav-links a:hover, .mobile-link:hover {
+  opacity: 0.6;
+}
+
+.nav-search-pill {
+  background: rgba(247, 243, 237, 0.08);
+  border: 1px solid rgba(247, 243, 237, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-search-pill:hover {
+  background: rgba(247, 243, 237, 0.15);
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1010;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 2px;
+  background: #f7f3ed;
+  transition: all 0.3s;
+}
+
+/* MOBILE NAV */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: #0d0a09;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 40px;
+  gap: 25px;
+  z-index: 999;
+  transition: right 0.4s ease;
+  border-left: 1px solid rgba(247, 243, 237, 0.1);
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+/* HERO SECTION */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-welcome {
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.hero-title {
+  font-family: 'IM Fell English', serif;
+  font-size: 4.5rem;
+  font-weight: normal;
+  font-style: italic;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.hero-sub {
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  opacity: 0.6;
+}
+
+.hero-search {
+  display: flex;
+  max-width: 450px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(247, 243, 237, 0.3);
+}
+
+.hero-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #f7f3ed;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  outline: none;
+}
+
+.hero-search-btn {
+  background: transparent;
+  border: none;
+  color: #f7f3ed;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* COMMON SECTION DESIGN */
+.dark-section {
+  padding: 120px 8%;
+}
+
+.sec-inner {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.sec-heading {
+  font-family: 'IM Fell English', serif;
+  font-size: 3rem;
+  font-weight: normal;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.sec-sub {
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 25px;
+}
+
+.body-txt {
+  margin-bottom: 20px;
+  opacity: 0.85;
+  font-size: 1.05rem;
+}
+
+.italic-txt {
+  font-style: italic;
+}
+
+.dot-list {
+  list-style-type: none;
+  margin: 25px 0;
+  padding-left: 10px;
+}
+
+.dot-list li {
+  position: relative;
+  margin-bottom: 15px;
+  padding-left: 20px;
+  opacity: 0.85;
+}
+
+.dot-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: rgba(247, 243, 237, 0.4);
+}
+
+/* BUTTONS */
+.btn-outline {
+  display: inline-block;
+  padding: 12px 30px;
+  border: 1px solid #f7f3ed;
+  color: #f7f3ed;
+  text-decoration: none;
+  text-transform: lowercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  margin-top: 30px;
+  transition: all 0.3s;
+  background: transparent;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: #f7f3ed;
+  color: #0d0a09;
+}
+
+/* CONTACT SECTION GRID */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.contact-tagline {
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-bottom: 35px;
+}
+
+.contact-details {
+  border-top: 1px solid rgba(247,243,237,0.1);
+  padding-top: 25px;
+  margin-bottom: 35px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.detail-label {
+  opacity: 0.5;
+}
+
+.social-row {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(247,243,237,0.15);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f7f3ed;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.social-icon:hover {
+  background: #f7f3ed;
+  color: #0d0a09;
+}
+
+/* FORM FIELDS */
+.form-field {
+  width: 100%;
+  background: rgba(247, 243, 237, 0.03);
+  border: 1px solid rgba(247, 243, 237, 0.15);
+  color: #f7f3ed;
+  padding: 15px;
+  margin-bottom: 15px;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-field:focus {
+  border-color: #f7f3ed;
+}
+
+.form-msg {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid rgba(247, 243, 237, 0.05);
+  font-size: 0.85rem;
+  opacity: 0.5;
+  letter-spacing: 0.05em;
+}
+
+/* CONTENT CARD GRID (POEMS & RESEARCH) */
+.poem-grid, .research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.content-card {
+  background: rgba(26, 20, 18, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(247, 243, 237, 0.08);
+  border-radius: 8px;
+  padding: 30px;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(247, 243, 237, 0.25);
+}
+
+.card-title {
+  font-family: 'IM Fell English', serif;
+  font-size: 1.8rem;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.card-date {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.card-snippet {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.card-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  border-top: 1px solid rgba(247,243,237,0.1);
+  padding-top: 15px;
+}
+
+/* POEM MODAL overlay screen */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 10, 9, 0.92);
+  backdrop-filter: blur(15px);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-content {
+  background: #120e0d;
+  border: 1px solid rgba(247, 243, 237, 0.15);
+  max-width: 650px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 40px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: transparent;
+  border: none;
+  color: #f7f3ed;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* ADMIN PANEL STYLES */
+.admin-container {
+  max-width: 650px;
+  margin: 120px auto;
+  background: rgba(18, 14, 13, 0.85);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(247, 243, 237, 0.1);
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links, .nav-search-pill {
+    display: none;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-title {
+    font-size: 3rem;
+  }
 }
