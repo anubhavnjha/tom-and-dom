@@ -4,34 +4,23 @@
   <meta charset="UTF-8">
   <title>Admin Portal — tom' and dom'</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body { background-color: #0d0a09; color: #f7f3ed; padding: 50px; font-family: 'Playfair Display', serif; }
-    .admin-box { background: #1a1a1a; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto; }
-    input, textarea, select { width: 100%; padding: 10px; margin-bottom: 15px; background: #333; border: 1px solid #555; color: white; }
-    button { background: #f7f3ed; color: #0d0a09; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; }
-  </style>
 </head>
 <body>
 
-  <div class="admin-box" id="uploadForm" style="display: none;">
-    <h2>Upload to Firebase</h2>
+  <div class="admin-box" id="adminBox" style="display: none;">
+    <h2>Publish Live Content</h2>
     
-    <label>Where is this going?</label>
-    <select id="contentType">
-      <option value="poems">Poems Section</option>
-      <option value="research_library">Research Section</option>
+    <label style="display:block; margin-bottom:5px;">Where are you publishing?</label>
+    <select id="contentType" class="form-field">
+      <option value="poems">Publish Poem</option>
+      <option value="research">Publish Research Paper</option>
     </select>
 
-    <label>Title</label>
-    <input type="text" id="postTitle" placeholder="Enter Title">
+    <input type="text" id="postTitle" class="form-field" placeholder="Document Title" required>
+    <input type="text" id="postDate" class="form-field" placeholder="Publication Date (e.g., July 14, 2026)" required>
+    <textarea id="postBody" class="form-field" rows="10" placeholder="Type or paste contents here..." required></textarea>
 
-    <label>Date</label>
-    <input type="text" id="postDate" placeholder="e.g., July 14, 2026">
-
-    <label>Content Body</label>
-    <textarea id="postBody" rows="10" placeholder="Write your poem or research here..."></textarea>
-
-    <button id="publishBtn">Publish to Website</button>
+    <button id="btnPublish" class="btn-submit">Publish Live</button>
   </div>
 
   <script type="module" src="admin-script.js"></script>
