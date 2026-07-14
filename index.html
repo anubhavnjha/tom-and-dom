@@ -1,64 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="theme-color" content="#0d0a09">
+  <meta name="description" content="tom' and dom' — with love for literature and tom.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>tom' and dom'</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <nav id="navbar">
-    <a href="index.html" class="logo">
-      <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" class="logo-img">
-    </a>
+<nav id="navbar">
+  <a href="#hero" class="nav-logo" aria-label="tom and dom home">
+    <img src="assets/images/tom-and-dom-logo.png" alt="tom' and dom' logo" style="height: 35px; width: auto;">
+  </a>
+  
+  <div class="nav-right">
+    <button class="nav-search-pill" id="navSearchBtn" aria-label="Search poems">
+      <i class="fa-solid fa-magnifying-glass" style="font-size: 0.9rem; color: #f7f3ed;"></i>
+    </button>
+    
     <ul class="nav-links">
-      <li><a href="index.html">home</a></li>
+      <li><a href="#hero">home</a></li>
+      <li><a href="poems.html">poems</a></li>
       <li><a href="#about">about us</a></li>
       <li><a href="#contact">contact us</a></li>
       <li><a href="research.html" target="_blank">research</a></li>
     </ul>
-  </nav>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <section class="welcome-section">
-    <h1>tom' and dom'.</h1>
-    <p style="font-size: 1.2rem; font-style: italic; opacity: 0.8;">"With love for literature and tom."</p>
-  </section>
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="#hero" class="mobile-link">home</a>
+  <a href="poems.html" class="mobile-link">poems</a>
+  <a href="#about" class="mobile-link">about us</a>
+  <a href="#contact" class="mobile-link">contact us</a>
+  <a href="research.html" target="_blank" class="mobile-link">research</a>
+</div>
 
-  <section id="about">
-    <div class="container-dark">
-      <h2 style="font-family: 'IM Fell English', serif; font-size: 2.5rem; margin-bottom: 20px;">about us</h2>
-      <p>Welcome to our little sanctuary of verses and thoughts. This space is dedicated to exploring the depth of emotions through poetry and academic exploration. Here, words are painted to heal, study, and remember.</p>
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-welcome">Welcome to</p>
+    <h1 class="hero-title">tom' and dom'</h1>
+    <p class="hero-sub">WITH LOVE FOR LITERATURE AND TOM</p>
+    <div class="hero-search" role="search">
+      <input type="text" id="heroInput" class="hero-input" placeholder="explore poems" aria-label="Search poems">
+      <button class="hero-search-btn" id="heroSearchBtn" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="contact">
-    <div class="container-dark">
-      <h2 style="font-family: 'IM Fell English', serif; font-size: 2.5rem; margin-bottom: 20px;">contact us</h2>
-      <p style="margin-bottom: 20px;">We would love to hear from you. Drop your messages below:</p>
-      
-      <form id="contactForm">
-        <input type="text" class="form-field" placeholder="your name" required>
-        <input type="email" class="form-field" placeholder="your email" required>
-        <textarea class="form-field" rows="5" placeholder="write your message..." required></textarea>
-        <button type="submit" class="btn-submit">send message</button>
+<section id="poems" class="dark-section">
+  <div class="sec-inner center-text">
+    <h2 class="sec-heading">poems</h2>
+    <p class="poems-desc">Writing should capture the vastness of life through the simplest lens. Like the timeless art of poetry, it is about stripping away the noise to let what truly matters shine. Between these lines, you will find verses woven from love, nature, human goodness, and deep symbols—all driven by the singular inspiration found in Tom. These are the quiet truths, spoken most clearly.</p>
+    <a href="poems.html" class="btn-outline">read all my poems</a>
+  </div>
+</section>
+
+<section id="about" class="dark-section">
+  <div class="sec-inner">
+    <h2 class="sec-heading">about us.</h2>
+    <p class="sec-sub">The Story So Far</p>
+    <p class="body-txt italic-txt">Hey, I'm Anubhav Jha. If you're looking for someone who fits neatly into a single box, you might be in the wrong place. My life is a fast-paced balancing act between the roar of the cricket stadium, the busy lecture halls of Delhi University, and the quiet rhythm of a pen hitting paper.</p>
+    <p class="body-txt">Here is a look at the different channels I'm constantly tuning into:</p>
+    <ul class="dot-list">
+      <li><strong>On the Pitch:</strong> As a Division-19 cricketer, the boundary ropes are where I test my limits. Cricket teaches me how to handle high-pressure situations, think three steps ahead, and show up every single day ready to serve.</li>
+      <li><strong>In the Classroom:</strong> When I don't have a bat in hand, I'm navigating the campus paths at DU. Being a university student is all about expanding my worldview, asking tough questions, and laying the groundwork for what comes next.</li>
+      <li><strong>Between the Lines:</strong> Beyond the sports gear and the textbooks, I lose myself in poetry and writing. It's where I slow down the chaos of daily life, capture raw emotions, and make sense of the world through rhythm and rhyme.</li>
+    </ul>
+    <p class="sec-sub conclusion-label" style="margin-top: 30px;">My Conclusion</p>
+    <p class="body-txt">I'm just a guy chasing a massive dream, trying to perfect my cover drive by day and my stanzas by night. So don't just stand on the boundary line—take a look around, explore my latest projects, or drop a message if you want to collaborate on something game-changing. Let's build something unforgettable.</p>
+  </div>
+</section>
+
+<section id="credit" class="dark-section">
+  <div class="sec-inner">
+    <h2 class="sec-heading">credit.</h2>
+    <p class="sec-sub">To My Teacher, My Guide: Sir HV</p>
+    <p class="body-txt">To my high school English teacher, Mr. Harshvardhan Roy—whom, with the utmost respect, I will always call Sir HV.</p>
+    <p class="body-txt">Sir HV didn't just teach me from a syllabus; he unlocked my love of literature, English, and the art of storytelling, sparking an interest in writing and poetry that changed the trajectory of my life. But his lessons extended far beyond the walls of the classroom—he taught me how to live. To me, he was much more than a teacher; he was a profound father figure whose wisdom and warmth shaped who I am today.</p>
+    <p class="body-txt">Some of my fondest memories are of our long conversations and intense debates. We would dive into everything—from the intricacies of English literature and the beauty of different languages to the complexities of politics and the deeper meaning of life itself. He challenged my thinking, broadened my worldview, and taught me how to articulate my thoughts with conviction.</p>
+    <p class="credit-to-name" style="font-family: 'IM Fell English', serif; font-size: 1.8rem; margin: 25px 0 10px 0; font-style: italic;">To My Tom:</p>
+    <p class="body-txt">Alongside the profound foundation laid by Sir HV, a massive share of the credit goes to Tom. Tom has been the ultimate inspiration behind my creative expression—the very person for whom I have written a great number of my poems, and for whom I will undoubtedly continue to write for years to come. If Sir HV taught me how to live, it was Tom who gave those words a target and a purpose.</p>
+    <p class="body-txt">It is because of the belief, the debates, and the deep inspiration from both of them that I began this poetic journey. Thank you for the guidance, the arguments, the poetry, and the lifelong lessons.</p>
+  </div>
+</section>
+
+<section id="contact" class="dark-section">
+  <div class="sec-inner contact-grid">
+    <div class="contact-left">
+      <h2 class="sec-heading">contact us.</h2>
+      <p class="contact-tagline">We'd love<br><strong>to hear from you!</strong></p>
+      <div class="contact-details">
+        <div class="detail-row"><span class="detail-label">name</span><span class="detail-val">Anubhav Jha</span></div>
+        <div class="detail-row"><span class="detail-label">email</span><span class="detail-val">mailanubhavjha@gmail.com</span></div>
+        <div class="detail-row"><span class="detail-label">phone</span><span class="detail-val">+919508019158</span></div>
+        <div class="detail-row"><span class="detail-label">alt. email</span><span class="detail-val">anubhavjha@proton.me</span></div>
+      </div>
+      <div class="social-row">
+        <a href="https://instagram.com/anubhav.jhaa" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://x.com/imajha" class="social-icon" aria-label="X" target="_blank" rel="noopener noreferrer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white" aria-hidden="true" style="vertical-align: middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        <a href="https://youtube.com/AnubhavNJha" class="social-icon" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <form class="contact-form" id="contactForm" novalidate>
+        <input type="text" class="form-field" name="name" placeholder="name" autocomplete="name" aria-label="Your name" required>
+        <input type="email" class="form-field" name="email" placeholder="email address" autocomplete="email" aria-label="Your email" required>
+        <textarea class="form-field form-msg" name="message" placeholder="write a message" aria-label="Your message" required></textarea>
+        <button type="submit" class="btn-outline submit-btn">send message</button>
       </form>
     </div>
-  </section>
+  </div>
+</section>
 
-  <script>
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-        document.body.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-        document.body.classList.remove('scrolled');
-      }
-    });
-  </script>
+<footer>
+  <p>Made with love for literature &amp; tom. © <span id="footerYear">2026</span> tom' and dom'</p>
+</footer>
 
+<script src="script.js"></script>
 </body>
 </html>
