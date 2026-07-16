@@ -1,71 +1,54 @@
 /* =========================================================
-   tom' and dom' — admin-script.js
+   tom' and dom' — admin-script.js 
    ========================================================= */
 
 'use strict';
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+// 1. IMPORT signInWithEmailAndPassword INSTEAD of signInAnonymously
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
-  authDomain: "tom-and-dom.firebaseapp.com",
-  databaseURL: "https://tom-and-dom-default-rtdb.firebaseio.com",
-  projectId: "tom-and-dom",
-  storageBucket: "tom-and-dom.firebasestorage.app"
+  "apiKey": "AIzaSyBXRNFclGzJdwkdhfDaP1zbsufdd_RkHBA",
+  "authDomain": "tom-and-dom.firebaseapp.com",
+  "databaseURL": "https://tom-and-dom-default-rtdb.firebaseio.com",
+  "projectId": "tom-and-dom",
+  "storageBucket": "tom-and-dom.firebasestorage.app",
+  "messagingSenderId": "513490054798",
+  "appId": "1:513490054798:web:ef02cfa2be9288fd61a3df",
+  "measurementId": "G-F4BSZQ97JM"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
-// Fetch admin verification code from Realtime Database Console
-get(ref(db, 'admin_password')).then((snapshot) => {
-  const secretKey = snapshot.val() || "StelaJha9229"; // fallback backup password
-  
-  const attempt = prompt("Enter Administrative Verification Code:");
-  if (attempt === secretKey) {
-    document.getElementById("adminBox").style.display = "block";
-  } else {
-    alert("Incorrect entry code! Return to homepage.");
-    window.location.href = "index.html";
-  }
-}).catch(() => {
-  // If connection parameters are slow, use secure local validation check
-  const attempt = prompt("Database offline. Enter Administrative Verification Code:");
-  if (attempt === "StelaJha9229") {
-    document.getElementById("adminBox").style.display = "block";
-  } else {
-    alert("Access Denied.");
-    window.location.href = "index.html";
-  }
-});
+// 2. Prompt for both Admin Email and Admin Password
+const emailAttempt = prompt("Enter Admin Email:");
+const passwordAttempt = prompt("Enter Admin Password:");
 
-// Upload form submission parsing
-document.getElementById('btnPublish').addEventListener('click', () => {
-  const type = document.getElementById('contentType').value;
-  const title = document.getElementById('postTitle').value.trim();
-  const date = document.getElementById('postDate').value.trim();
-  const body = document.getElementById('postBody').value.trim();
+if (!emailAttempt || !passwordAttempt) {
+  alert("Access Denied.");
+  window.location.href = "index.html";
+} else {
+  // 3. Sign in securely using Firebase Auth
+  signInWithEmailAndPassword(auth, emailAttempt, passwordAttempt)
+    .then((userCredential) => {
+      // If sign-in succeeds, reveal the Admin Panel immediately!
+      document.getElementById('adminPanel').style.display = "block";
+      
+      // Initialize System Features
+      initializeGodModeControls();
+      initializeContentManagement();
+      initializeLiveMetrics();
+    })
+    .catch((error) => {
+      console.error("Auth Error:", error.message);
+      alert("Incorrect admin credentials.");
+      window.location.href = "index.html";
+    });
+}
 
-  if (!title || !body) {
-    alert("Title and Body components are required to publish!");
-    return;
-  }
-
-  const generatedId = "node_" + Date.now();
-
-  set(ref(db, `${type}/${generatedId}`), {
-    title: title,
-    date: date,
-    body: body,
-    views: 0,
-    likes: 0
-  }).then(() => {
-    alert("Published successfully!");
-    document.getElementById('postTitle').value = "";
-    document.getElementById('postDate').value = "";
-    document.getElementById('postBody').value = "";
-  }).catch((err) => {
-    alert("Upload failed: " + err.message);
-  });
-});
+// NOTE: You can completely delete the old verifyAdminClearance() function 
+// since Firebase now handles verification natively through the login process!
