@@ -31,16 +31,59 @@ const modalBody = document.getElementById('modalBody');
 const likeBtn = document.getElementById('likeBtn');
 const likeCounter = document.getElementById('likeCounter');
 
-// Fetch Live Realtime Database Content
-onValue(ref(db, 'poems'), (snapshot) => {
-  const data = snapshot.val();
-  if (!data) {
-    container.innerHTML = `<p style="text-align: center; grid-column: 1/-1;">No verses published yet.</p>`;
-    return;
-  }
-  loadedPoems = data;
-  renderPoemsGrid("");
-});
+// A. Listen for Live Global Theme Updates
+  onValue(ref(db, 'live_status/current_theme'), (snapshot) => {
+    const incomingTheme = snapshot.val() || 'default';
+    // Clean old state
+    document.body.classList.remove('theme-melancholy', 'theme-midnight', 'theme-parchment');
+    if (incomingTheme !== 'default') {
+      document.body.classList.add('theme-' + incomingTheme);
+    }
+  });
+
+  // B. Listen for Live Top Broadcast Banners
+  onValue(ref(db, 'live_status/flash_broadcast'), (snapshot) => {
+    const globalMessage = snapshot.val();
+    let bannerEl = document.getElementById('liveBroadcastBanner');
+    const navEl = document.getElementById('navbar');
+    
+    if (!globalMessage) {
+      if (bannerEl) {
+        bannerEl.remove();
+        if (navEl) navEl.style.top = '0';
+      }
+      return;
+    }
+    
+    if (!bannerEl) {
+      bannerEl = document.createElement('div');
+      bannerEl.id = 'liveBroadcastBanner';
+      bannerEl.style.cssText = `
+        background: #44342e;
+        color: #f7f3ed;
+        text-align: center;
+        padding: 10px 20px;
+        font-family: 'IM Fell English', serif;
+        font-size: 1.05rem;
+        letter-spacing: 0.05em;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        animation: fadeInDown 0.4s ease-out;
+      `;
+      document.body.prepend(bannerEl);
+    }
+    
+    bannerEl.innerHTML = `<i class="fa-solid fa-bullhorn" style="color: #f2e6d0; font-size:0.9rem;"></i> <span>${globalMessage}</span>`;
+    if (navEl) navEl.style.top = bannerEl.offsetHeight + 'px';
+  });
 
 // Render the elements cleanly
 function renderPoemsGrid(filterTerm) {
